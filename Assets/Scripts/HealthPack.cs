@@ -12,9 +12,11 @@ public class HealthPack : MonoBehaviour
         pos.z = -1f;
         transform.position = pos;
 
-        // [FAIR PLAY] Shrink the collider to 80% of the sprite size.
-        // This makes navigation around the packs cleaner.
+        // [VISUAL] Enforce layering: Higher than Obstacles (5) but below Player (10)
         SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null) sr.sortingOrder = 7;
+
+        // [FAIR PLAY] Shrink the collider to 80% of the sprite size.
         BoxCollider2D bc = GetComponent<BoxCollider2D>();
         if (bc == null) bc = gameObject.AddComponent<BoxCollider2D>();
         bc.isTrigger = true;

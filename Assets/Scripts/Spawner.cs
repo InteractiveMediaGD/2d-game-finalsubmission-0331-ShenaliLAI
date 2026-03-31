@@ -60,18 +60,38 @@ public class Spawner : MonoBehaviour
     
     void SpawnItem()
     {
-        float randomY = Random.Range(-4f, 4f);
-        Vector3 spawnPos = new Vector3(12f, randomY, -1f); // Spawns slightly in front to prevent visual overlap 
+        // [ANTI-OVERLAP] Ensure physics is up to date before checking!
+        Physics2D.SyncTransforms();
+
+        Vector3 spawnPos = Vector3.zero;
+        bool foundSafeSpot = false;
         
-        // 20% chance HealthPack, 80% chance Enemy (Pure random logic)
+        // Try up to 5 times to find a gap in the obstacles
+        for (int i = 0; i < 5; i++)
+        {
+            float randomY = Random.Range(-4f, 4f);
+            spawnPos = new Vector3(12f, randomY, -1f);
+            
+            // Check if ANY collider is already at this spot
+            // Increased radius slightly to 0.7f for better "buffer" space
+            Collider2D hit = Physics2D.OverlapCircle(spawnPos, 0.7f);
+            
+            if (hit == null)
+            {
+                foundSafeSpot = true;
+                break;
+            }
+        }
+
+        // If we didn't find a safe spot after 5 tries, we skip the spawn to be safe!
+        if (!foundSafeSpot) return;
+        
+        // 20% chance HealthPack, 80% chance Enemy
         float randomVal = Random.value;
         GameObject prefab = (randomVal > 0.8f && healthPackPrefab != null) ? healthPackPrefab : enemyPrefab;
         
         if (prefab != null)
         {
-            // Force Z-position to -1 for 100% collision reliability!
-            spawnPos.z = -1f;
-            
             Instantiate(prefab, spawnPos, Quaternion.identity);
         }
     }

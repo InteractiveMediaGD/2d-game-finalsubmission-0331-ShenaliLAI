@@ -181,8 +181,9 @@ public class PlayerController : MonoBehaviour
         Enemy enemy = col.GetComponent<Enemy>();
         if (enemy != null)
         {
+            // Loss of 20 health for hitting enemy - confirmed!
             TakeDamage(20);
-            enemy.TakeDamageFromProjectile(); 
+            enemy.TakeDamageFromCollision(); // Use the collision method which does NOT give points!
             handled = true;
         }
 

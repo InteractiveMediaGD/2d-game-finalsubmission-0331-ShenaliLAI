@@ -161,6 +161,8 @@ MonoBehaviour:
   projectilePrefab: {fileID: 2409828399905305824, guid: ab9ceff85b129724fb50cd6c682d13ee, type: 3}
   firePoint: {fileID: 736257609}
   engineSource: {fileID: 64543927}
+  hitShakeDuration: 0.1
+  hitShakeMagnitude: 0.1
 --- !u!61 &64543923
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -204,7 +206,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.5}
   m_EdgeRadius: 0
 --- !u!50 &64543924
 Rigidbody2D:
@@ -214,7 +216,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64543921}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

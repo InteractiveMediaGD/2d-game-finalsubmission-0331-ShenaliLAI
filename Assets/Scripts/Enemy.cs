@@ -13,9 +13,11 @@ public class Enemy : MonoBehaviour
         pos.z = -1f;
         transform.position = pos;
 
-        // [FAIR PLAY] Shrink the collider to 80% of the sprite size.
-        // This makes dodging feel more rewarding and prevents "ghost hits."
+        // [VISUAL] Enforce layering: Higher than Obstacles (5) but below Player (10)
         SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null) sr.sortingOrder = 7;
+
+        // [FAIR PLAY] Shrink the collider to 80% of the sprite size.
         BoxCollider2D bc = GetComponent<BoxCollider2D>();
         if (bc == null) bc = gameObject.AddComponent<BoxCollider2D>();
         bc.isTrigger = true;
@@ -31,7 +33,19 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamageFromProjectile()
     {
+        // Shooting an enemy gives 10 marks as requested!
         if (GameManager.Instance != null) GameManager.Instance.AddScore(scoreValue);
+        Die();
+    }
+
+    public void TakeDamageFromCollision()
+    {
+        // Colliding with an enemy does NOT give marks as requested!
+        Die();
+    }
+
+    private void Die()
+    {
         if (destroySound != null) AudioSource.PlayClipAtPoint(destroySound, transform.position);
         Destroy(gameObject);
     }
